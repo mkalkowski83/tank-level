@@ -1,7 +1,5 @@
 # Czujnik poziomu szamba — JSN-SR04T-V3.3 + MT3608
-# Spec: docs/superpowers/specs/2026-08-25-szambo-level-sensor-design.md
-# Połączenia (prototyp USB / bateria): docs/schematics/polaczenia-devkit-usb.md
-#
+# Dokumentacja (PL/EN): docs/README.md
 # Logi USB: esphome logs esphome/szambo-level-sensor.yaml
 
 substitutions:

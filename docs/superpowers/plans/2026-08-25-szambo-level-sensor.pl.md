@@ -1,3 +1,5 @@
+> [English](2026-08-25-szambo-level-sensor.en.md) · **Polski**
+
 # Szambo Level Sensor — plan implementacji
 
 **Goal:** Bezprzewodowy czujnik poziomu szamba (ESP32 + JSN-SR04T) z raportowaniem do Home Assistant, zasilany 18650, deep sleep między pomiarami.
@@ -6,7 +8,7 @@
 
 **Tech Stack:** ESPHome 2026.8, ESP32 Arduino (toolchain: platformio), JSN-SR04T-V3.3, MT3608, IRLZ44N, Home Assistant.
 
-**Agent note:** Przy zmianach hardware/firmware najpierw zaktualizuj [`docs/superpowers/specs/2026-08-25-szambo-level-sensor-design.md`](../specs/2026-08-25-szambo-level-sensor-design.md), potem ten plan.
+**Agent note:** Przy zmianach hardware/firmware najpierw zaktualizuj [`docs/superpowers/specs/2026-08-25-szambo-level-sensor-design.pl.md`](../specs/2026-08-25-szambo-level-sensor-design.pl.md), potem ten plan.
 
 ---
 
@@ -78,9 +80,9 @@
 | Plik | Rola |
 |------|------|
 | `esphome/szambo-level-sensor.yaml` | Firmware ESPHome |
-| `docs/schematics/polaczenia-devkit-usb.md` | Okablowanie DevKit |
-| `docs/schematics/polaczenia.md` | Okablowanie FireBeetle (docelowo) |
-| `docs/superpowers/specs/2026-08-25-szambo-level-sensor-design.md` | Specyfikacja |
+| `docs/schematics/connections-devkit.pl.md` | Okablowanie DevKit |
+| `docs/schematics/connections-firebeetle.pl.md` | Okablowanie FireBeetle (docelowo) |
+| `docs/superpowers/specs/2026-08-25-szambo-level-sensor-design.pl.md` | Specyfikacja |
 
 ## Weryfikacja po zmianach
 

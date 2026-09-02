@@ -1,3 +1,5 @@
+> [English](connections-firebeetle.en.md) · **Polski**
+
 # Polaczenia — czujnik poziomu szamba
 
 Prosty przewodnik montazowy (bez schematu CAD).

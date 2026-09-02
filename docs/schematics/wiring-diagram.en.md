@@ -1,8 +1,10 @@
+> **English** · [Polski](wiring-diagram.pl.md)
+
 # Wiring Diagram — ESP32 DevKit Tank Level Sensor
 
 Active prototype: **ESP32 DevKit V1** + **18650** + **MT3608** + **IRLZ44N** + **JSN-SR04T-V3.3**.
 
-Detailed connection tables (Polish): [`polaczenia-devkit-usb.md`](polaczenia-devkit-usb.md)
+Detailed connection tables: [`connections-devkit.en.md`](connections-devkit.en.md)
 
 ---
 

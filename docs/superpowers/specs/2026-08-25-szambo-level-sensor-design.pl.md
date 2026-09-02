@@ -1,3 +1,5 @@
+> [English](2026-08-25-szambo-level-sensor-design.en.md) · **Polski**
+
 # Czujnik poziomu szamba — specyfikacja hardware + ESPHome
 
 **Data:** 2026-08-25  
@@ -5,10 +7,10 @@
 **Status:** Prototyp **DevKit V1 + 18650 + MOSFET** — pomiar ultrasonics, deep sleep, monitoring baterii **działają**. Docelowo: panel solarny, ładowanie, montaż w szambo, migracja na FireBeetle.
 
 **Powiązane dokumenty:**
-- Połączenia DevKit (USB / bateria): [`docs/schematics/polaczenia-devkit-usb.md`](../../schematics/polaczenia-devkit-usb.md)
-- Połączenia docelowe (FireBeetle): [`docs/schematics/polaczenia.md`](../../schematics/polaczenia.md)
-- Plan implementacji: [`docs/superpowers/plans/2026-08-25-szambo-level-sensor.md`](../plans/2026-08-25-szambo-level-sensor.md)
-- Firmware: [`esphome/szambo-level-sensor.yaml`](../../esphome/szambo-level-sensor.yaml)
+- Połączenia DevKit (USB / bateria): [`docs/schematics/connections-devkit.pl.md`](../../schematics/connections-devkit.pl.md)
+- Połączenia docelowe (FireBeetle): [`docs/schematics/connections-firebeetle.pl.md`](../../schematics/connections-firebeetle.pl.md)
+- Plan implementacji: [`docs/superpowers/plans/2026-08-25-szambo-level-sensor.pl.md`](../plans/2026-08-25-szambo-level-sensor.pl.md)
+- Firmware: [`esphome/szambo-level-sensor.yaml`](../../../esphome/szambo-level-sensor.yaml)
 
 ## Cel
 
@@ -35,7 +37,7 @@ Bezprzewodowy (Wi‑Fi) pomiar poziomu w szambie kilka razy dziennie, integracja
 
 ## Prototyp aktywny (DevKit V1 + bateria — 2026-09)
 
-Montaż zgodny z [`polaczenia-devkit-usb.md`](../../schematics/polaczenia-devkit-usb.md) (sekcja bateria).
+Montaż zgodny z [`connections-devkit.pl.md`](../../schematics/connections-devkit.pl.md) (sekcja bateria).
 
 | Element | Stan |
 |---------|------|

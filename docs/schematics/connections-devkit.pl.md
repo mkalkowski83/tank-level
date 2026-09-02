@@ -1,3 +1,5 @@
+> [English](connections-devkit.en.md) · **Polski**
+
 # Polaczenia — ESP32 DevKit V1 + expansion board
 
 Modul: **ESP32-DevKitC / DevKit V1** (38 pin) + **expansion board 38P** — ESP wchodzi w adapter, piny na goldpinach / terminalach.
@@ -141,4 +143,4 @@ Przy Gate zwartym do Source: D–S powinno być **OL**. Odczyt ~0,04 Ω przy lu�
 | FireBeetle | mniejsza płytka, wbudowany charger + ADC |
 | P-MOS AO3401A na VCC | pełne odcięcie czujnika |
 
-Szczegóły FireBeetle: [`polaczenia.md`](polaczenia.md).
+Szczegóły FireBeetle: [`connections-firebeetle.pl.md`](connections-firebeetle.pl.md).

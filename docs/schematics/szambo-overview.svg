@@ -144,7 +144,7 @@
   <rect x="60" y="1360" width="1080" height="120" rx="8" fill="#fff0f0" stroke="#c44" stroke-width="2"/>
   <text x="80" y="1395" class="h3">Przed montazem</text>
   <text x="80" y="1425" class="t">Sprawdz multimetrem brak zwarcia BAT+ - GND. C1: polaryzacja (+/-).</text>
-  <text x="80" y="1455" class="t">Sonda skierowana w dol. Szczegoly: docs/schematics/polaczenia.md</text>
+  <text x="80" y="1455" class="t">Sonda skierowana w dol. Szczegoly: docs/schematics/connections-firebeetle.pl.md</text>
 
   <text x="1140" y="1685" text-anchor="end" class="ts">Rev. 2.0 blokowy</text>
 </svg>
