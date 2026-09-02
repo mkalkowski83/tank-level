@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1700" font-family="Arial, Helvetica, sans-serif">
+  <style>
+    .h1 { font: bold 32px Arial; fill: #111; }
+    .h2 { font: bold 22px Arial; fill: #004488; }
+    .h3 { font: bold 18px Arial; fill: #222; }
+    .t  { font: 17px Arial; fill: #111; }
+    .ts { font: 15px Arial; fill: #444; }
+    .box { fill: #eef4ff; stroke: #224; stroke-width: 3; }
+    .box-y { fill: #fff8e0; stroke: #886600; stroke-width: 3; stroke-dasharray: 12 8; }
+    .box-g { fill: #eefaf0; stroke: #264; stroke-width: 3; }
+    .arr { stroke: #333; stroke-width: 3; fill: none; marker-end: url(#a); }
+    .arr-t { font: bold 16px Arial; fill: #0066aa; }
+  </style>
+  <defs>
+    <marker id="a" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#333"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="1700" fill="#fff"/>
+
+  <text x="600" y="50" text-anchor="middle" class="h1">Czujnik poziomu szamba</text>
+  <text x="600" y="82" text-anchor="middle" class="ts">Schemat blokowy - polaczenia montazowe | 2026-08-25</text>
+
+  <!-- ===== SEKCJA 1: ZASILANIE ===== -->
+  <text x="60" y="130" class="h2">1. Zasilanie</text>
+
+  <rect x="60" y="150" width="200" height="90" rx="8" class="box"/>
+  <text x="160" y="185" text-anchor="middle" class="h3">BT1</text>
+  <text x="160" y="210" text-anchor="middle" class="t">18650 Li-ion</text>
+  <text x="160" y="232" text-anchor="middle" class="ts">BAT+ / GND</text>
+
+  <rect x="320" y="150" width="220" height="90" rx="8" class="box"/>
+  <text x="430" y="185" text-anchor="middle" class="h3">Panel solarny</text>
+  <text x="430" y="215" text-anchor="middle" class="t">USB 5V</text>
+
+  <rect x="600" y="150" width="280" height="90" rx="8" class="box"/>
+  <text x="740" y="185" text-anchor="middle" class="h3">U1 FireBeetle ESP32-E</text>
+  <text x="740" y="215" text-anchor="middle" class="t">BAT+  BAT-  USB</text>
+
+  <line x1="260" y1="195" x2="320" y2="195" class="arr"/>
+  <text x="270" y="180" class="arr-t">BAT+</text>
+  <line x1="540" y1="195" x2="600" y2="195" class="arr"/>
+  <text x="545" y="180" class="arr-t">USB</text>
+
+  <text x="60" y="270" class="ts">Ogniwo na BAT+/BAT- FireBeetle. Panel USB tylko laduje (nie zasila bezposrednio czujnika).</text>
+
+  <!-- ===== SEKCJA 2: 5V ===== -->
+  <text x="60" y="320" class="h2">2. Przetwornica 5V (na PCB)</text>
+  <rect x="60" y="340" width="1080" height="200" rx="10" class="box-y"/>
+  <text x="600" y="365" text-anchor="middle" class="ts">Plytka uniwersalna: C1, U2 MT3608, Q1 IRLZ44N, R3, C2</text>
+
+  <rect x="90" y="390" width="120" height="70" rx="6" class="box-g"/>
+  <text x="150" y="420" text-anchor="middle" class="t">BAT+</text>
+  <text x="150" y="445" text-anchor="middle" class="ts">szyna</text>
+
+  <rect x="250" y="390" width="100" height="70" rx="6" class="box"/>
+  <text x="300" y="425" text-anchor="middle" class="t">C1</text>
+  <text x="300" y="448" text-anchor="middle" class="ts">1000uF</text>
+
+  <rect x="390" y="380" width="140" height="90" rx="6" class="box"/>
+  <text x="460" y="415" text-anchor="middle" class="h3">U2 MT3608</text>
+  <text x="460" y="440" text-anchor="middle" class="ts">IN+ IN- OUT+ OUT-</text>
+
+  <rect x="570" y="390" width="120" height="70" rx="6" class="box"/>
+  <text x="630" y="420" text-anchor="middle" class="t">Q1</text>
+  <text x="630" y="445" text-anchor="middle" class="ts">IRLZ44N</text>
+
+  <rect x="730" y="390" width="120" height="70" rx="6" class="box-g"/>
+  <text x="790" y="425" text-anchor="middle" class="t">+5V</text>
+  <text x="790" y="448" text-anchor="middle" class="ts">5.0 V</text>
+
+  <rect x="890" y="390" width="100" height="70" rx="6" class="box"/>
+  <text x="940" y="425" text-anchor="middle" class="t">C2</text>
+  <text x="940" y="448" text-anchor="middle" class="ts">100nF</text>
+
+  <line x1="210" y1="425" x2="250" y2="425" class="arr"/>
+  <line x1="350" y1="425" x2="390" y2="425" class="arr"/>
+  <line x1="530" y1="425" x2="570" y2="425" class="arr"/>
+  <text x="535" y="410" class="arr-t">IN-</text>
+  <line x1="690" y1="425" x2="730" y2="425" class="arr"/>
+  <text x="695" y="410" class="arr-t">OUT+</text>
+  <line x1="850" y1="425" x2="890" y2="425" class="arr"/>
+
+  <text x="90" y="510" class="t">GPIO16 HIGH = Q1 ON = GND czujnika do masy. R3 10k: Gate Q1 do GND.</text>
+  <text x="90" y="535" class="ts">MT3608 IN- i OUT- do GND. OUT+ stale ~5V na VCC czujnika.</text>
+
+  <!-- ===== SEKCJA 3: CZUJNIK ===== -->
+  <text x="60" y="590" class="h2">3. Czujnik JSN-SR04T</text>
+
+  <rect x="60" y="610" width="280" height="100" rx="8" class="box"/>
+  <text x="200" y="645" text-anchor="middle" class="h3">FireBeetle GPIO</text>
+  <text x="200" y="675" text-anchor="middle" class="t">25=TRIG  26=ECHO  16=POWER</text>
+
+  <rect x="420" y="610" width="200" height="100" rx="8" class="box"/>
+  <text x="520" y="645" text-anchor="middle" class="h3">Dzielnik</text>
+  <text x="520" y="675" text-anchor="middle" class="t">R1 10k + R2 22k</text>
+
+  <rect x="700" y="610" width="280" height="100" rx="8" class="box"/>
+  <text x="840" y="645" text-anchor="middle" class="h3">J1 JSN-SR04T</text>
+  <text x="840" y="675" text-anchor="middle" class="t">VCC GND TRIG ECHO</text>
+
+  <line x1="340" y1="660" x2="420" y2="660" class="arr"/>
+  <text x="345" y="645" class="arr-t">GPIO25</text>
+  <line x1="620" y1="660" x2="700" y2="660" class="arr"/>
+  <text x="625" y="645" class="arr-t">ECHO</text>
+  <line x1="790" y1="610" x2="790" y2="580" class="arr"/>
+  <text x="800" y="595" class="arr-t">+5V z MT3608</text>
+
+  <text x="60" y="740" class="t">ECHO (5V) przez R1/R2 do GPIO26 (~3.4V). VCC=+5V. GND czujnika przez Q1 Drain.</text>
+
+  <!-- ===== SEKCJA 4: WAKE + ADC ===== -->
+  <text x="60" y="790" class="h2">4. Wake i bateria</text>
+
+  <rect x="60" y="810" width="500" height="90" rx="8" class="box"/>
+  <text x="310" y="845" text-anchor="middle" class="h3">SW1 Przycisk</text>
+  <text x="310" y="875" text-anchor="middle" class="t">GPIO39 ---[przycisk]--- GND  (opcj. 10k do 3V3)</text>
+
+  <rect x="600" y="810" width="540" height="90" rx="8" class="box"/>
+  <text x="870" y="845" text-anchor="middle" class="h3">GPIO34 ADC baterii</text>
+  <text x="870" y="875" text-anchor="middle" class="t">Wbudowany dzielnik FireBeetle - bez lutowania</text>
+
+  <!-- ===== TABELA ===== -->
+  <text x="60" y="940" class="h2">5. Szybka tabela polaczen</text>
+  <rect x="60" y="955" width="1080" height="380" rx="8" fill="#f5f5f5" stroke="#999" stroke-width="2"/>
+
+  <text x="80" y="990" class="h3">Zasilanie</text>
+  <text x="80" y="1018" class="t">18650+  -&gt;  BAT+ FireBeetle, C1+, MT3608 IN+</text>
+  <text x="80" y="1046" class="t">18650-  -&gt;  GND (wspolna masa)</text>
+  <text x="80" y="1074" class="t">Panel USB  -&gt;  USB FireBeetle</text>
+
+  <text x="80" y="1110" class="h3">5V / MOSFET</text>
+  <text x="80" y="1138" class="t">MT3608 IN- OUT-  -&gt;  GND  |  Q1 Drain  -&gt;  GND czujnika  |  Q1 Source  -&gt;  GND</text>
+  <text x="80" y="1166" class="t">MT3608 OUT+  -&gt;  C2, JSN VCC (5.0V)  |  Q1 Gate  -&gt;  GPIO16 + R3-&gt;GND</text>
+
+  <text x="80" y="1202" class="h3">Czujnik</text>
+  <text x="80" y="1230" class="t">GPIO25  -&gt;  TRIG  |  ECHO  -&gt;  R1  -&gt;  GPIO26  -&gt;  R2  -&gt;  GND</text>
+
+  <text x="80" y="1266" class="h3">Inne</text>
+  <text x="80" y="1294" class="t">GPIO39 + SW1 + GND  |  GPIO34 = bateria (YAML)  |  Nie: OUT+ na Q1 Drain</text>
+
+  <!-- ===== PRZED MONTAZEM ===== -->
+  <rect x="60" y="1360" width="1080" height="120" rx="8" fill="#fff0f0" stroke="#c44" stroke-width="2"/>
+  <text x="80" y="1395" class="h3">Przed montazem</text>
+  <text x="80" y="1425" class="t">Sprawdz multimetrem brak zwarcia BAT+ - GND. C1: polaryzacja (+/-).</text>
+  <text x="80" y="1455" class="t">Sonda skierowana w dol. Szczegoly: docs/schematics/polaczenia.md</text>
+
+  <text x="1140" y="1685" text-anchor="end" class="ts">Rev. 2.0 blokowy</text>
+</svg>

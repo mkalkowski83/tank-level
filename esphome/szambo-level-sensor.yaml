@@ -1,0 +1,495 @@
+# Czujnik poziomu szamba — JSN-SR04T-V3.3 + MT3608
+# Spec: docs/superpowers/specs/2026-08-25-szambo-level-sensor-design.md
+# Połączenia (prototyp USB / bateria): docs/schematics/polaczenia-devkit-usb.md
+#
+# Logi USB: esphome logs esphome/szambo-level-sensor.yaml
+
+substitutions:
+  device_name: szambo-level
+  friendly_name: Szambo Level Sensor
+  sensor_min_distance_cm: "25"
+  # Test (ściana 3 m): empty=300 → 0%; full=160 (zakres 140 cm jak produkcja 180/40)
+  # Produkcja (szambo): empty=180, full=40
+  distance_empty_cm: "300"
+  distance_full_cm: "160"
+  enable_deep_sleep: "true"
+  enable_battery_check: "true"
+  enable_sensor_power: "true"
+  sleep_duration: 4h
+  battery_voltage_normal_v: "3.7"
+  battery_voltage_warning_v: "3.3"
+  battery_voltage_stop_v: "3.1"
+  battery_voltage_critical_v: "2.9"
+  # DevKit: mult = V_bat / V_GPIO34 (4.13V / 1.94V przy 100k/100k)
+  battery_adc_multiplier: "2.11"
+  sleep_until_valid: "true"
+  sleep_retry_interval: 30s
+  sleep_max_measure_cycles: "20"
+  measure_interval: 30s
+  sensor_stabilize: 1500ms
+  measure_retries: "5"
+  measure_retry_delay: 80ms
+  ultrasonic_pulse_time: 20us
+  reject_short_echo: "true"
+  log_level: INFO
+  pin_sensor_power: GPIO4
+  pin_ultrasonic_trig: GPIO25
+  pin_ultrasonic_echo: GPIO26
+  pin_wakeup: GPIO33
+  pin_battery_adc: GPIO34
+
+globals:
+  - id: boot_count
+    type: int
+    restore_value: yes
+    initial_value: "0"
+  - id: measure_count
+    type: int
+    restore_value: no
+    initial_value: "0"
+  - id: sleep_retry_count
+    type: int
+    restore_value: no
+    initial_value: "0"
+  - id: last_measure_ok
+    type: bool
+    restore_value: no
+    initial_value: "false"
+  - id: last_valid_distance
+    type: float
+    restore_value: no
+    initial_value: "0"
+  - id: has_valid_distance
+    type: bool
+    restore_value: yes
+    initial_value: "false"
+  - id: last_raw_distance
+    type: float
+    restore_value: no
+    initial_value: "0"
+
+esphome:
+  name: ${device_name}
+  friendly_name: ${friendly_name}
+  on_boot:
+    priority: 600
+    then:
+      - logger.log:
+          level: INFO
+          format: "BOOT: enable_deep_sleep=${enable_deep_sleep} measure_interval=${measure_interval}"
+      - lambda: |-
+          id(boot_count)++;
+      - if:
+          condition:
+            lambda: 'return "${enable_deep_sleep}" == "true";'
+          then:
+            - script.execute: boot_measure_then_sleep
+          else:
+            - script.execute: measure_cycle
+
+# toolchain: platformio — obejście template depth w ESPHome 2026.8 / HA (deprecated ~2027.2)
+esp32:
+  board: esp32dev
+  toolchain: platformio
+  framework:
+    type: arduino
+    version: recommended
+
+logger:
+  level: ${log_level}
+  baud_rate: 115200
+  logs:
+    sensor: ${log_level}
+    sensor.ultrasonic: ${log_level}
+    switch: ${log_level}
+    deep_sleep: ${log_level}
+    wifi: INFO
+    api: INFO
+
+api:
+  encryption:
+    key: !secret szambo_level__encryption_key
+
+ota:
+  - platform: esphome
+
+wifi:
+  ssid: !secret wifi_guest_ssid
+  password: !secret wifi_guest_password
+  power_save_mode: light
+  on_connect:
+    - logger.log: "WiFi connected"
+  on_disconnect:
+    - logger.log:
+        level: WARN
+        format: "WiFi disconnected"
+
+deep_sleep:
+  id: main_sleep
+  sleep_duration: ${sleep_duration}
+  # wakeup_pin wyłączony bez podłączonego SW1 — luźny GPIO33 budzi ESP natychmiast (fałszywy „restart loop”)
+  # Po podłączeniu przycisku (GPIO33 → GND): odkomentuj blok poniżej
+  # wakeup_pin:
+  #   number: ${pin_wakeup}
+  #   mode:
+  #     input: true
+  #     pullup: true
+  #   inverted: true
+
+script:
+  - id: boot_measure_then_sleep
+    mode: restart
+    then:
+      - lambda: 'id(sleep_retry_count) = 0;'
+      - while:
+          condition:
+            lambda: |-
+              if (id(last_measure_ok)) {
+                return false;
+              }
+              if ("${enable_battery_check}" == "true") {
+                if (id(battery_voltage).state <= ${battery_voltage_stop_v}f) {
+                  return false;
+                }
+              }
+              const int max_cycles = ${sleep_max_measure_cycles};
+              if (max_cycles == 0) {
+                return true;
+              }
+              return id(sleep_retry_count) < max_cycles;
+          then:
+            - if:
+                condition:
+                  lambda: 'return id(sleep_retry_count) > 0;'
+                then:
+                  - delay: ${sleep_retry_interval}
+            - script.execute: measure_cycle
+            - lambda: 'id(sleep_retry_count)++;'
+      - if:
+          condition:
+            lambda: 'return id(last_measure_ok);'
+          then:
+            - wait_until:
+                condition:
+                  wifi.connected:
+                timeout: 45s
+            - delay: 2s
+            - logger.log:
+                format: "Valid reading after %d cycle(s), deep sleep ${sleep_duration}"
+                args: ["id(sleep_retry_count)"]
+            - deep_sleep.enter: main_sleep
+          else:
+            - if:
+                condition:
+                  lambda: |-
+                    if ("${enable_battery_check}" == "true") {
+                      return id(battery_voltage).state <= ${battery_voltage_stop_v}f;
+                    }
+                    return false;
+                then:
+                  - logger.log:
+                      level: WARN
+                      format: "Battery %.2f V <= stop (${battery_voltage_stop_v} V); deep sleep without ultrasonic"
+                      args: ["id(battery_voltage).state"]
+                  - deep_sleep.enter: main_sleep
+                else:
+                  - logger.log:
+                      level: WARN
+                      format: "No valid reading after %d cycle(s); staying awake (sleep_until_valid)"
+                      args: ["id(sleep_retry_count)"]
+                  - if:
+                      condition:
+                        lambda: 'return "${sleep_until_valid}" == "true";'
+                      then:
+                        - delay: ${sleep_retry_interval}
+                        - script.execute: boot_measure_then_sleep
+                      else:
+                        - deep_sleep.enter: main_sleep
+
+  - id: measure_cycle
+    mode: restart
+    then:
+      - logger.log:
+          level: INFO
+          format: "=== measure_cycle #%d START ==="
+          args: ["id(measure_count) + 1"]
+      - lambda: |-
+          id(measure_count)++;
+      - if:
+          condition:
+            lambda: 'return "${enable_battery_check}" == "true";'
+          then:
+            - component.update: battery_voltage
+            - lambda: |-
+                if ("${enable_battery_check}" != "true") {
+                  id(battery_status).publish_state("disabled");
+                  id(battery_low).publish_state(false);
+                  id(battery_critical).publish_state(false);
+                } else {
+                  const float v = id(battery_voltage).state;
+                  if (isnan(v)) {
+                    id(battery_status).publish_state("unknown");
+                    id(battery_low).publish_state(false);
+                    id(battery_critical).publish_state(false);
+                  } else {
+                    if (v <= ${battery_voltage_critical_v}f) {
+                      id(battery_status).publish_state("critical");
+                    } else if (v <= ${battery_voltage_stop_v}f) {
+                      id(battery_status).publish_state("stop");
+                    } else if (v <= ${battery_voltage_warning_v}f) {
+                      id(battery_status).publish_state("warning");
+                    } else if (v >= ${battery_voltage_normal_v}f) {
+                      id(battery_status).publish_state("normal");
+                    } else {
+                      id(battery_status).publish_state("degraded");
+                    }
+                    id(battery_low).publish_state(v <= ${battery_voltage_warning_v}f);
+                    id(battery_critical).publish_state(v <= ${battery_voltage_critical_v}f);
+                  }
+                }
+            - logger.log:
+                format: "Battery: %.2f V (status=%s)"
+                args: ['id(battery_voltage).state', 'id(battery_status).state.c_str()']
+      - if:
+          condition:
+            lambda: |-
+              if ("${enable_battery_check}" == "true") {
+                return id(battery_voltage).state > ${battery_voltage_stop_v}f;
+              }
+              return true;
+          then:
+            - if:
+                condition:
+                  lambda: 'return "${enable_sensor_power}" == "true";'
+                then:
+                  - switch.turn_on: sensor_power
+                  - delay: ${sensor_stabilize}
+                else:
+                  - delay: 200ms
+            - lambda: 'id(last_measure_ok) = false;'
+            - component.update: tank_distance
+            - component.update: tank_distance_raw
+            - lambda: |-
+                if (isnan(id(last_raw_distance))) {
+                  if (isnan(id(tank_distance).state)) {
+                    ESP_LOGW("ultrasonic", "attempt 1: raw=NAN filtered=NAN");
+                  } else {
+                    ESP_LOGW("ultrasonic", "attempt 1: raw=NAN filtered=%.1f cm", id(tank_distance).state);
+                  }
+                } else if (isnan(id(tank_distance).state)) {
+                  ESP_LOGW("ultrasonic", "attempt 1: raw=%.3f m (%.1f cm) filtered=NAN", id(last_raw_distance), id(last_raw_distance) * 100.0f);
+                } else {
+                  ESP_LOGI("ultrasonic", "attempt 1: raw=%.3f m (%.1f cm) filtered=%.1f cm", id(last_raw_distance), id(last_raw_distance) * 100.0f, id(tank_distance).state);
+                }
+            - delay: ${measure_retry_delay}
+            - repeat:
+                count: 4
+                then:
+                  - if:
+                      condition:
+                        lambda: 'return isnan(id(tank_distance).state);'
+                      then:
+                        - component.update: tank_distance
+                        - component.update: tank_distance_raw
+                        - delay: ${measure_retry_delay}
+            - if:
+                condition:
+                  lambda: 'return !isnan(id(tank_distance).state);'
+                then:
+                  - lambda: 'id(last_measure_ok) = true;'
+            - if:
+                condition:
+                  lambda: "return isnan(id(tank_distance).state);"
+                then:
+                  - logger.log:
+                      level: WARN
+                      format: "Ultrasonic NAN after 5 retries"
+                else:
+                  - component.update: tank_fill_level
+                  - logger.log:
+                      format: "Ultrasonic OK: raw=%.3f m (%.1f cm) filtered=%.1f cm fill=%.0f %%"
+                      args: ["id(last_raw_distance)", "id(last_raw_distance) * 100.0f", "id(tank_distance).state", "id(tank_fill_level).state"]
+            - if:
+                condition:
+                  lambda: 'return "${enable_sensor_power}" == "true";'
+                then:
+                  - switch.turn_off: sensor_power
+          else:
+            - logger.log:
+                level: WARN
+                format: "Battery %.2f V <= stop threshold (${battery_voltage_stop_v} V); skipping ultrasonic"
+                args: ["id(battery_voltage).state"]
+      - logger.log:
+          level: INFO
+          format: "=== measure_cycle END (ok=%d) ==="
+          args: ["(int) id(last_measure_ok)"]
+
+interval:
+  - interval: ${measure_interval}
+    then:
+      - if:
+          condition:
+            lambda: 'return "${enable_deep_sleep}" != "true";'
+          then:
+            - script.execute: measure_cycle
+
+binary_sensor:
+  - platform: template
+    name: "Battery Low"
+    id: battery_low
+    device_class: battery
+    lambda: |-
+      if ("${enable_battery_check}" != "true") {
+        return false;
+      }
+      const float v = id(battery_voltage).state;
+      if (isnan(v)) {
+        return false;
+      }
+      return v <= ${battery_voltage_warning_v}f;
+
+  - platform: template
+    name: "Battery Critical"
+    id: battery_critical
+    device_class: problem
+    lambda: |-
+      if ("${enable_battery_check}" != "true") {
+        return false;
+      }
+      const float v = id(battery_voltage).state;
+      if (isnan(v)) {
+        return false;
+      }
+      return v <= ${battery_voltage_critical_v}f;
+
+switch:
+  - platform: gpio
+    pin: ${pin_sensor_power}
+    id: sensor_power
+    name: "Sensor Power"
+    internal: true
+    restore_mode: ALWAYS_OFF
+
+button:
+  - platform: template
+    name: "Run Measurement"
+    id: run_measurement
+    internal: true
+    on_press:
+      - script.execute: measure_cycle
+
+sensor:
+  - platform: ultrasonic
+    trigger_pin: ${pin_ultrasonic_trig}
+    echo_pin: ${pin_ultrasonic_echo}
+    timeout: 4m
+    pulse_time: ${ultrasonic_pulse_time}
+    name: "Tank Distance"
+    id: tank_distance
+    unit_of_measurement: cm
+    accuracy_decimals: 1
+    update_interval: never
+    filters:
+      - lambda: |-
+          id(last_raw_distance) = x;
+          if (isnan(x)) {
+            return x;
+          }
+          return x * 100.0f;
+      - lambda: |-
+          const float min_reliable = 10.0f;
+          const float min_d = ${sensor_min_distance_cm};
+          if ("${reject_short_echo}" == "true" && !isnan(x) && x < min_reliable) {
+            if (id(has_valid_distance) && id(last_valid_distance) >= min_d) {
+              return id(last_valid_distance);
+            }
+            return NAN;
+          }
+          if (!isnan(x)) {
+            id(last_valid_distance) = x;
+            id(has_valid_distance) = true;
+            return x;
+          }
+          if (id(has_valid_distance) && id(last_valid_distance) >= min_d) {
+            return id(last_valid_distance);
+          }
+          return x;
+      - median:
+          window_size: 3
+          send_every: 1
+          send_first_at: 1
+
+  - platform: template
+    name: "Tank Distance Raw"
+    id: tank_distance_raw
+    unit_of_measurement: m
+    accuracy_decimals: 3
+    # Bez device_class — HA nie konwertuje 0.475 m → 47.5 cm (identyczny wygląd jak Tank Distance)
+    lambda: |-
+      return id(last_raw_distance);
+    update_interval: never
+
+  - platform: template
+    name: "Tank Fill Level"
+    id: tank_fill_level
+    unit_of_measurement: "%"
+    accuracy_decimals: 0
+    lambda: |-
+      if (isnan(id(tank_distance).state)) {
+        return NAN;
+      }
+      const float min_d = ${sensor_min_distance_cm};
+      const float empty = ${distance_empty_cm};
+      const float full = ${distance_full_cm};
+      const float dist = id(tank_distance).state;
+      if (dist < min_d) {
+        return 100.0f;
+      }
+      if (dist >= empty) {
+        return 0.0f;
+      }
+      const float pct = (empty - dist) / (empty - full) * 100.0f;
+      if (pct < 0.0f) return 0.0f;
+      if (pct > 100.0f) return 100.0f;
+      return pct;
+    update_interval: never
+
+  - platform: adc
+    pin: ${pin_battery_adc}
+    name: "Battery Voltage"
+    id: battery_voltage
+    device_class: voltage
+    state_class: measurement
+    unit_of_measurement: V
+    accuracy_decimals: 2
+    update_interval: never
+    attenuation: 12db
+    filters:
+      - multiply: ${battery_adc_multiplier}
+
+text_sensor:
+  - platform: template
+    name: "Battery Status"
+    id: battery_status
+    icon: mdi:battery
+    lambda: |-
+      if ("${enable_battery_check}" != "true") {
+        return std::string("disabled");
+      }
+      const float v = id(battery_voltage).state;
+      if (isnan(v)) {
+        return std::string("unknown");
+      }
+      if (v <= ${battery_voltage_critical_v}f) {
+        return std::string("critical");
+      }
+      if (v <= ${battery_voltage_stop_v}f) {
+        return std::string("stop");
+      }
+      if (v <= ${battery_voltage_warning_v}f) {
+        return std::string("warning");
+      }
+      if (v >= ${battery_voltage_normal_v}f) {
+        return std::string("normal");
+      }
+      return std::string("degraded");
