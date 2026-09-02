@@ -1,20 +1,20 @@
-> [English](2026-08-25-szambo-level-sensor-design.en.md) · **Polski**
+> [English](2026-08-25-tank-level-sensor-design.en.md) · **Polski**
 
-# Czujnik poziomu szamba — specyfikacja hardware + ESPHome
+# Czujnik poziomu tanku — specyfikacja hardware + ESPHome
 
 **Data:** 2026-08-25  
 **Ostatnia aktualizacja:** 2026-09-01  
-**Status:** Prototyp **DevKit V1 + 18650 + MOSFET** — pomiar ultrasonics, deep sleep, monitoring baterii **działają**. Docelowo: panel solarny, ładowanie, montaż w szambo, migracja na FireBeetle.
+**Status:** Prototyp **DevKit V1 + 18650 + MOSFET** — pomiar ultrasonics, deep sleep, monitoring baterii **działają**. Docelowo: panel solarny, ładowanie, montaż w tanku, migracja na FireBeetle.
 
 **Powiązane dokumenty:**
 - Połączenia DevKit (USB / bateria): [`docs/schematics/connections-devkit.pl.md`](../../schematics/connections-devkit.pl.md)
 - Połączenia docelowe (FireBeetle): [`docs/schematics/connections-firebeetle.pl.md`](../../schematics/connections-firebeetle.pl.md)
-- Plan implementacji: [`docs/superpowers/plans/2026-08-25-szambo-level-sensor.pl.md`](../plans/2026-08-25-szambo-level-sensor.pl.md)
-- Firmware: [`esphome/szambo-level-sensor.yaml`](../../../esphome/szambo-level-sensor.yaml)
+- Plan implementacji: [`docs/superpowers/plans/2026-08-25-tank-level-sensor.pl.md`](../plans/2026-08-25-tank-level-sensor.pl.md)
+- Firmware: [`esphome/tank-level-sensor.yaml`](../../../esphome/tank-level-sensor.yaml)
 
 ## Cel
 
-Bezprzewodowy (Wi‑Fi) pomiar poziomu w szambie kilka razy dziennie, integracja z Home Assistant przez ESPHome. Zasilanie: ogniwo 18650 (panel solarny i ładowanie — kolejny krok). Oszczędzanie energii: deep sleep 4 h między pomiarami, MOSFET low-side na GND czujnika.
+Bezprzewodowy (Wi‑Fi) pomiar poziomu w tanku kilka razy dziennie, integracja z Home Assistant przez ESPHome. Zasilanie: ogniwo 18650 (panel solarny i ładowanie — kolejny krok). Oszczędzanie energii: deep sleep 4 h między pomiarami, MOSFET low-side na GND czujnika.
 
 ## Komponenty
 
@@ -220,7 +220,7 @@ Przy **Gate zwartym do Source** (OFF): D–S powinno być **OL** (wysoka rezysta
 
 ## Home Assistant / ESPHome
 
-Plik: `esphome/szambo-level-sensor.yaml`
+Plik: `esphome/tank-level-sensor.yaml`
 
 ### Encje
 
@@ -255,7 +255,7 @@ Plik: `esphome/szambo-level-sensor.yaml`
 | `esp32.toolchain: platformio` | Obejście `template instantiation depth` (GCC 14 / IDF) |
 | Brak `captive_portal`, `web_server`, `wifi.ap` | Mniejszy build |
 | `wifi.power_save_mode: light` | Oszczędzanie energii |
-| `api.encryption.key` | Szyfrowanie API (`!secret szambo_level__encryption_key`) |
+| `api.encryption.key` | Szyfrowanie API (`!secret tank_level__encryption_key`) |
 
 ### Konwersja m→cm
 
@@ -302,6 +302,6 @@ MT3608 pozostaje włączony; Q1 redukuje pobór czujnika, nie boostera.
 
 1. Obserwacja zużycia baterii przez kilka dni (HA: **Battery Voltage**).
 2. Panel solarny + moduł ładowania (TP4056 lub FireBeetle).
-3. Montaż sondy w obudowie / szambo → kalibracja **180/40**.
+3. Montaż sondy w obudowie / tank → kalibracja **180/40**.
 4. Opcjonalnie: P-MOS na VCC (AO3401A) dla pełnego odcięcia czujnika.
 5. Migracja na FireBeetle + native ESP-IDF po stabilizacji ESPHome.

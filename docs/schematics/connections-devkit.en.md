@@ -127,7 +127,7 @@ With Gate shorted to Source: D–S should be **OL**. Reading ~0.04 Ω with float
 
 ## 8. Firmware
 
-- File: `esphome/szambo-level-sensor.yaml`
+- File: `esphome/tank-level-sensor.yaml`
 - `enable_deep_sleep: true`, `sleep_duration: 4h`
 - `enable_sensor_power: true`, `pin_sensor_power: GPIO4`
 - `enable_battery_check: true`

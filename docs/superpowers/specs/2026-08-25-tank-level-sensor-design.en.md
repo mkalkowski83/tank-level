@@ -1,4 +1,4 @@
-> **English** · [Polski](2026-08-25-szambo-level-sensor-design.pl.md)
+> **English** · [Polski](2026-08-25-tank-level-sensor-design.pl.md)
 
 # Septic tank level sensor — hardware + ESPHome specification
 
@@ -9,8 +9,8 @@
 **Related documents:**
 - DevKit connections (USB / battery): [`docs/schematics/connections-devkit.en.md`](../../schematics/connections-devkit.en.md)
 - Target connections (FireBeetle): [`docs/schematics/connections-firebeetle.en.md`](../../schematics/connections-firebeetle.en.md)
-- Implementation plan: [`docs/superpowers/plans/2026-08-25-szambo-level-sensor.en.md`](../plans/2026-08-25-szambo-level-sensor.en.md)
-- Firmware: [`esphome/szambo-level-sensor.yaml`](../../../esphome/szambo-level-sensor.yaml)
+- Implementation plan: [`docs/superpowers/plans/2026-08-25-tank-level-sensor.en.md`](../plans/2026-08-25-tank-level-sensor.en.md)
+- Firmware: [`esphome/tank-level-sensor.yaml`](../../../esphome/tank-level-sensor.yaml)
 
 ## Goal
 
@@ -220,7 +220,7 @@ With **Gate shorted to Source** (OFF): D–S should be **OL** (high resistance).
 
 ## Home Assistant / ESPHome
 
-File: `esphome/szambo-level-sensor.yaml`
+File: `esphome/tank-level-sensor.yaml`
 
 ### Entities
 
@@ -255,7 +255,7 @@ File: `esphome/szambo-level-sensor.yaml`
 | `esp32.toolchain: platformio` | Workaround for `template instantiation depth` (GCC 14 / IDF) |
 | No `captive_portal`, `web_server`, `wifi.ap` | Smaller build |
 | `wifi.power_save_mode: light` | Energy saving |
-| `api.encryption.key` | API encryption (`!secret szambo_level__encryption_key`) |
+| `api.encryption.key` | API encryption (`!secret tank_level__encryption_key`) |
 
 ### m→cm conversion
 

@@ -1,6 +1,6 @@
-# Czujnik poziomu szamba
+# Czujnik poziomu tanku
 
-Bezprzewodowy monitor poziomu szamba oparty na **ESP32**, **ESPHome** i **Home Assistant**. Sonda ultrasoniczna mierzy odległość do lustra cieczy; firmware przelicza ją na procent zapełnienia i raportuje przez Wi‑Fi. Urządzenie działa na ogniwie **18650** z **deep sleep** między pomiarami.
+Bezprzewodowy monitor poziomu tanku oparty na **ESP32**, **ESPHome** i **Home Assistant**. Sonda ultrasoniczna mierzy odległość do lustra cieczy; firmware przelicza ją na procent zapełnienia i raportuje przez Wi‑Fi. Urządzenie działa na ogniwie **18650** z **deep sleep** między pomiarami.
 
 ## Funkcje
 
@@ -39,8 +39,8 @@ Dodatkowe dokumenty:
 
 - [Okablowanie DevKit](docs/schematics/connections-devkit.pl.md)
 - [Okablowanie FireBeetle (docelowo)](docs/schematics/connections-firebeetle.pl.md)
-- [Specyfikacja](docs/superpowers/specs/2026-08-25-szambo-level-sensor-design.pl.md)
-- [Plan implementacji](docs/superpowers/plans/2026-08-25-szambo-level-sensor.pl.md)
+- [Specyfikacja](docs/superpowers/specs/2026-08-25-tank-level-sensor-design.pl.md)
+- [Plan implementacji](docs/superpowers/plans/2026-08-25-tank-level-sensor.pl.md)
 - [Indeks dokumentacji](docs/README.md)
 
 ## Mapa GPIO
@@ -67,7 +67,7 @@ Dodatkowe dokumenty:
 
 ## Firmware
 
-Główny plik: [`esphome/szambo-level-sensor.yaml`](esphome/szambo-level-sensor.yaml)
+Główny plik: [`esphome/tank-level-sensor.yaml`](esphome/tank-level-sensor.yaml)
 
 | Ustawienie | Wartość |
 |------------|---------|
@@ -88,14 +88,14 @@ Plik `esphome/secrets.yaml` (gitignore):
 ```yaml
 wifi_ssid: "..."
 wifi_password: "..."
-szambo_level__encryption_key: "..."
+tank_level__encryption_key: "..."
 ```
 
 ## Flash i logi
 
 ```bash
-esphome run esphome/szambo-level-sensor.yaml
-esphome logs esphome/szambo-level-sensor.yaml
+esphome run esphome/tank-level-sensor.yaml
+esphome logs esphome/tank-level-sensor.yaml
 ```
 
 ## Przepływ pomiaru

@@ -1,8 +1,8 @@
 > [English](README.en.md) · **Polski**
 
-# Firmware ESPHome — `szambo-level-sensor.yaml`
+# Firmware ESPHome — `tank-level-sensor.yaml`
 
-Jeden plik YAML dla czujnika poziomu szamba: ESP32 DevKit V1, ultrasonik JSN-SR04T-V3.3, bateria 18650, deep sleep co 4 godziny.
+Jeden plik YAML dla czujnika poziomu tanku: ESP32 DevKit V1, ultrasonik JSN-SR04T-V3.3, bateria 18650, deep sleep co 4 godziny.
 
 ## Co robi
 
@@ -21,7 +21,7 @@ Utwórz `esphome/secrets.yaml` (poza repozytorium):
 ```yaml
 wifi_guest_ssid: "twoj-ssid"
 wifi_guest_password: "twoje-haslo"
-szambo_level__encryption_key: "klucz-base64-z-esphome-dashboard"
+tank_level__encryption_key: "klucz-base64-z-esphome-dashboard"
 ```
 
 Klucz szyfrowania wygeneruj w ESPHome Dashboard lub przez `esphome secrets`.
@@ -38,13 +38,13 @@ Klucz szyfrowania wygeneruj w ESPHome Dashboard lub przez `esphome secrets`.
 | `pin_sensor_power` | GPIO4 | DevKit; docelowo FireBeetle GPIO16 |
 | `sleep_until_valid` | `true` | Ponawiaj do poprawnego odczytu ultrasonicu |
 
-Wartości produkcyjne (szambo): `distance_empty_cm: 180`, `distance_full_cm: 40`.
+Wartości produkcyjne (tank): `distance_empty_cm: 180`, `distance_full_cm: 40`.
 
 ## Polecenia
 
 ```bash
-esphome run esphome/szambo-level-sensor.yaml    # kompilacja + flash
-esphome logs esphome/szambo-level-sensor.yaml   # logi USB
+esphome run esphome/tank-level-sensor.yaml    # kompilacja + flash
+esphome logs esphome/tank-level-sensor.yaml   # logi USB
 ```
 
 ## Dokumentacja

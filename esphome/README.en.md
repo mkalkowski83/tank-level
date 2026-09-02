@@ -1,6 +1,6 @@
 > **English** · [Polski](README.pl.md)
 
-# ESPHome firmware — `szambo-level-sensor.yaml`
+# ESPHome firmware — `tank-level-sensor.yaml`
 
 Single YAML file for the septic tank level sensor: ESP32 DevKit V1, JSN-SR04T-V3.3 ultrasonic, 18650 battery, deep sleep every 4 hours.
 
@@ -21,7 +21,7 @@ Create `esphome/secrets.yaml` (not in repo) with:
 ```yaml
 wifi_guest_ssid: "your-ssid"
 wifi_guest_password: "your-password"
-szambo_level__encryption_key: "base64-key-from-esphome-dashboard"
+tank_level__encryption_key: "base64-key-from-esphome-dashboard"
 ```
 
 Generate the encryption key in ESPHome Dashboard or with `esphome secrets`.
@@ -43,8 +43,8 @@ Production tank values: `distance_empty_cm: 180`, `distance_full_cm: 40`.
 ## Commands
 
 ```bash
-esphome run esphome/szambo-level-sensor.yaml    # compile + flash
-esphome logs esphome/szambo-level-sensor.yaml   # USB serial logs
+esphome run esphome/tank-level-sensor.yaml    # compile + flash
+esphome logs esphome/tank-level-sensor.yaml   # USB serial logs
 ```
 
 ## Documentation

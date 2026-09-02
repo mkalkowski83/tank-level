@@ -1,8 +1,8 @@
-# Tank Level Sensor / Czujnik poziomu szamba
+# Tank Level Sensor / Czujnik poziomu tanku
 
 | Language | Documentation |
 |----------|----------------|
 | **English** | [README.en.md](README.en.md) |
 | **Polski** | [README.pl.md](README.pl.md) |
 
-Firmware (language-neutral): [`esphome/szambo-level-sensor.yaml`](esphome/szambo-level-sensor.yaml)
+Firmware (language-neutral): [`esphome/tank-level-sensor.yaml`](esphome/tank-level-sensor.yaml)

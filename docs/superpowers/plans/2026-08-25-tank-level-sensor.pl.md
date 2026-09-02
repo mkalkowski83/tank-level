@@ -1,14 +1,14 @@
-> [English](2026-08-25-szambo-level-sensor.en.md) · **Polski**
+> [English](2026-08-25-tank-level-sensor.en.md) · **Polski**
 
-# Szambo Level Sensor — plan implementacji
+# Tank Level Sensor — plan implementacji
 
-**Goal:** Bezprzewodowy czujnik poziomu szamba (ESP32 + JSN-SR04T) z raportowaniem do Home Assistant, zasilany 18650, deep sleep między pomiarami.
+**Goal:** Bezprzewodowy czujnik poziomu tanku (ESP32 + JSN-SR04T) z raportowaniem do Home Assistant, zasilany 18650, deep sleep między pomiarami.
 
 **Architecture:** DevKit V1 → ESPHome → WiFi → HA API (szyfrowane). MT3608 z BAT+ daje 5 V dla ESP i czujnika. IRLZ44N low-side odłącza GND czujnika między pomiarami. ADC GPIO34 + dzielnik monitoruje baterię. Deep sleep 4 h; pomiar tylko po wybudzeniu.
 
 **Tech Stack:** ESPHome 2026.8, ESP32 Arduino (toolchain: platformio), JSN-SR04T-V3.3, MT3608, IRLZ44N, Home Assistant.
 
-**Agent note:** Przy zmianach hardware/firmware najpierw zaktualizuj [`docs/superpowers/specs/2026-08-25-szambo-level-sensor-design.pl.md`](../specs/2026-08-25-szambo-level-sensor-design.pl.md), potem ten plan.
+**Agent note:** Przy zmianach hardware/firmware najpierw zaktualizuj [`docs/superpowers/specs/2026-08-25-tank-level-sensor-design.pl.md`](../specs/2026-08-25-tank-level-sensor-design.pl.md), potem ten plan.
 
 ---
 
@@ -42,7 +42,7 @@
 
 ## Faza 4 — Bezpieczeństwo i integracja HA
 
-- [x] API encryption (`!secret szambo_level__encryption_key`)
+- [x] API encryption (`!secret tank_level__encryption_key`)
 - [x] Tank Distance Raw bez `device_class` (HA pokazuje metry, nie cm)
 - [x] `publish_state()` dla encji template baterii (nie `component.update`)
 - [x] Przyciski debug (Sensor Power, Run Measurement) — `internal: true` w trybie produkcyjnym
@@ -63,7 +63,7 @@
 
 - [ ] Obudowa wodoodporna; sonda skierowana w dół (membrana poza martwą strefą <25 cm)
 - [ ] Kalibracja produkcyjna: `distance_empty_cm: 180`, `distance_full_cm: 40`
-- [ ] Montaż w szambo; weryfikacja odczytów w HA
+- [ ] Montaż w tanku; weryfikacja odczytów w HA
 
 ## Faza 8 — Ulepszenia opcjonalne
 
@@ -79,19 +79,19 @@
 
 | Plik | Rola |
 |------|------|
-| `esphome/szambo-level-sensor.yaml` | Firmware ESPHome |
+| `esphome/tank-level-sensor.yaml` | Firmware ESPHome |
 | `docs/schematics/connections-devkit.pl.md` | Okablowanie DevKit |
 | `docs/schematics/connections-firebeetle.pl.md` | Okablowanie FireBeetle (docelowo) |
-| `docs/superpowers/specs/2026-08-25-szambo-level-sensor-design.pl.md` | Specyfikacja |
+| `docs/superpowers/specs/2026-08-25-tank-level-sensor-design.pl.md` | Specyfikacja |
 
 ## Weryfikacja po zmianach
 
 ```bash
 # Kompilacja / flash (ręcznie, gdy potrzebne):
-esphome run esphome/szambo-level-sensor.yaml
+esphome run esphome/tank-level-sensor.yaml
 
 # Logi USB (debug):
-esphome logs esphome/szambo-level-sensor.yaml
+esphome logs esphome/tank-level-sensor.yaml
 ```
 
 Oczekiwany log po wybudzeniu: `Battery: X.XX V` → `Ultrasonic OK: raw=…` → `Beginning sleep`.

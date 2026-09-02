@@ -1,13 +1,13 @@
-# Czujnik poziomu szamba — JSN-SR04T-V3.3 + MT3608
+# Czujnik poziomu tanku — JSN-SR04T-V3.3 + MT3608
 # Dokumentacja (PL/EN): docs/README.md
-# Logi USB: esphome logs esphome/szambo-level-sensor.yaml
+# Logi USB: esphome logs esphome/tank-level-sensor.yaml
 
 substitutions:
-  device_name: szambo-level
-  friendly_name: Szambo Level Sensor
+  device_name: tank-level
+  friendly_name: Tank Level Sensor
   sensor_min_distance_cm: "25"
   # Test (ściana 3 m): empty=300 → 0%; full=160 (zakres 140 cm jak produkcja 180/40)
-  # Produkcja (szambo): empty=180, full=40
+  # Produkcja (tank): empty=180, full=40
   distance_empty_cm: "300"
   distance_full_cm: "160"
   enable_deep_sleep: "true"
@@ -106,7 +106,7 @@ logger:
 
 api:
   encryption:
-    key: !secret szambo_level__encryption_key
+    key: !secret tank_level__encryption_key
 
 ota:
   - platform: esphome
