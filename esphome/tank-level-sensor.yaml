@@ -1,5 +1,8 @@
-# Czujnik poziomu tanku — JSN-SR04T-V3.3 + MT3608
+# Czujnik poziomu tanku — JSN-SR04T-V3.3 + MT3608 + AO3401A (P-MOS high-side)
 # Dokumentacja (PL/EN): docs/README.md
+# Połączenia AO3401A: docs/schematics/connections-ao3401a.pl.md
+# Migracja: docs/superpowers/specs/2026-09-02-ao3401a-migration-design.pl.md
+# Etap 1: enable_deep_sleep=false (logi USB); etap 2: true + sleep 8h
 # Logi USB: esphome logs esphome/tank-level-sensor.yaml
 
 substitutions:
@@ -10,10 +13,10 @@ substitutions:
   # Produkcja (tank): empty=180, full=40
   distance_empty_cm: "300"
   distance_full_cm: "160"
-  enable_deep_sleep: "true"
+  enable_deep_sleep: "false"  # Etap 1 AO3401A: USB + logi; etap 2 → "true"
   enable_battery_check: "true"
   enable_sensor_power: "true"
-  sleep_duration: 4h
+  sleep_duration: 8h
   battery_voltage_normal_v: "3.7"
   battery_voltage_warning_v: "3.3"
   battery_voltage_stop_v: "3.1"

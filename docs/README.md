@@ -17,6 +17,7 @@
 |----------|---------|--------|
 | Design spec | [design.en.md](superpowers/specs/2026-08-25-tank-level-sensor-design.en.md) | [design.pl.md](superpowers/specs/2026-08-25-tank-level-sensor-design.pl.md) |
 | AO3401A migration | [ao3401a-migration.en.md](superpowers/specs/2026-09-02-ao3401a-migration-design.en.md) | [ao3401a-migration.pl.md](superpowers/specs/2026-09-02-ao3401a-migration-design.pl.md) |
+| AO3401A implementation plan | [ao3401a-plan.en.md](superpowers/plans/2026-09-02-ao3401a-migration.en.md) | [ao3401a-plan.pl.md](superpowers/plans/2026-09-02-ao3401a-migration.pl.md) |
 | Implementation plan | [plan.en.md](superpowers/plans/2026-08-25-tank-level-sensor.en.md) | [plan.pl.md](superpowers/plans/2026-08-25-tank-level-sensor.pl.md) |
 
 ## Firmware / Firmware
