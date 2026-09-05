@@ -1,6 +1,6 @@
-> **English** · [Polski](2026-08-25-szambo-level-sensor.pl.md)
+> **English** · [Polski](2026-08-25-tank-level-sensor.pl.md)
 
-# Szambo Level Sensor — implementation plan
+# Tank Level Sensor — implementation plan
 
 **Goal:** Wireless septic tank level sensor (ESP32 + JSN-SR04T) reporting to Home Assistant, powered by 18650, deep sleep between measurements.
 
@@ -8,7 +8,7 @@
 
 **Tech Stack:** ESPHome 2026.8, ESP32 Arduino (toolchain: platformio), JSN-SR04T-V3.3, MT3608, IRLZ44N, Home Assistant.
 
-**Agent note:** When changing hardware/firmware, update [`docs/superpowers/specs/2026-08-25-szambo-level-sensor-design.en.md`](../specs/2026-08-25-szambo-level-sensor-design.en.md) first, then this plan.
+**Agent note:** When changing hardware/firmware, update [`docs/superpowers/specs/2026-08-25-tank-level-sensor-design.en.md`](../specs/2026-08-25-tank-level-sensor-design.en.md) first, then this plan.
 
 ---
 
@@ -42,7 +42,7 @@
 
 ## Phase 4 — Safety and HA integration
 
-- [x] API encryption (`!secret szambo_level__encryption_key`)
+- [x] API encryption (`!secret tank_level__encryption_key`)
 - [x] Tank Distance Raw without `device_class` (HA shows meters, not cm)
 - [x] `publish_state()` for battery template entities (not `component.update`)
 - [x] Debug buttons (Sensor Power, Run Measurement) — `internal: true` in production mode
@@ -79,19 +79,19 @@
 
 | File | Role |
 |------|------|
-| `esphome/szambo-level-sensor.yaml` | ESPHome firmware |
+| `esphome/tank-level-sensor.yaml` | ESPHome firmware |
 | `docs/schematics/connections-devkit.en.md` | DevKit wiring |
 | `docs/schematics/connections-firebeetle.en.md` | FireBeetle wiring (target) |
-| `docs/superpowers/specs/2026-08-25-szambo-level-sensor-design.en.md` | Specification |
+| `docs/superpowers/specs/2026-08-25-tank-level-sensor-design.en.md` | Specification |
 
 ## Verification after changes
 
 ```bash
 # Compile / flash (manually when needed):
-esphome run esphome/szambo-level-sensor.yaml
+esphome run esphome/tank-level-sensor.yaml
 
 # USB logs (debug):
-esphome logs esphome/szambo-level-sensor.yaml
+esphome logs esphome/tank-level-sensor.yaml
 ```
 
 Expected log after wake: `Battery: X.XX V` → `Ultrasonic OK: raw=…` → `Beginning sleep`.

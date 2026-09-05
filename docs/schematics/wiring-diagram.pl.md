@@ -1,6 +1,6 @@
 > [English](wiring-diagram.en.md) · **Polski**
 
-# Schemat połączeń — ESP32 DevKit, czujnik poziomu szamba
+# Schemat połączeń — ESP32 DevKit, czujnik poziomu tanku
 
 Aktywny prototyp: **ESP32 DevKit V1** + **18650** + **MT3608** + **IRLZ44N** + **JSN-SR04T-V3.3**.
 

@@ -127,7 +127,7 @@ Przy Gate zwartym do Source: D–S powinno być **OL**. Odczyt ~0,04 Ω przy lu�
 
 ## 8. Firmware
 
-- Plik: `esphome/szambo-level-sensor.yaml`
+- Plik: `esphome/tank-level-sensor.yaml`
 - `enable_deep_sleep: true`, `sleep_duration: 4h`
 - `enable_sensor_power: true`, `pin_sensor_power: GPIO4`
 - `enable_battery_check: true`

@@ -39,8 +39,8 @@ Additional docs:
 
 - [DevKit wiring](docs/schematics/connections-devkit.en.md) — step-by-step breadboard guide
 - [FireBeetle wiring (target)](docs/schematics/connections-firebeetle.en.md)
-- [Design spec](docs/superpowers/specs/2026-08-25-szambo-level-sensor-design.en.md)
-- [Implementation plan](docs/superpowers/plans/2026-08-25-szambo-level-sensor.en.md)
+- [Design spec](docs/superpowers/specs/2026-08-25-tank-level-sensor-design.en.md)
+- [Implementation plan](docs/superpowers/plans/2026-08-25-tank-level-sensor.en.md)
 - [All docs index](docs/README.md)
 
 ## GPIO summary
@@ -67,7 +67,7 @@ Additional docs:
 
 ## Firmware
 
-Main config: [`esphome/szambo-level-sensor.yaml`](esphome/szambo-level-sensor.yaml)
+Main config: [`esphome/tank-level-sensor.yaml`](esphome/tank-level-sensor.yaml)
 
 ### Key settings
 
@@ -90,17 +90,17 @@ Create `esphome/secrets.yaml` (gitignored) with at least:
 ```yaml
 wifi_ssid: "..."
 wifi_password: "..."
-szambo_level__encryption_key: "..."   # from: esphome encryption-key
+tank_level__encryption_key: "..."   # from: esphome encryption-key
 ```
 
 ## Flash and logs
 
 ```bash
 # Flash / OTA
-esphome run esphome/szambo-level-sensor.yaml
+esphome run esphome/tank-level-sensor.yaml
 
 # Serial logs (USB debug)
-esphome logs esphome/szambo-level-sensor.yaml
+esphome logs esphome/tank-level-sensor.yaml
 ```
 
 ## Measurement flow
