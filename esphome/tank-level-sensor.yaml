@@ -14,6 +14,7 @@ substitutions:
   distance_empty_cm: "300"
   distance_full_cm: "160"
   enable_deep_sleep: "false"  # Etap 1 AO3401A: USB + logi; etap 2 → "true"
+  enable_auto_measure: "false"  # false = pomiar tylko z HA (Wake and Measure); true = co measure_interval
   enable_battery_check: "true"
   enable_sensor_power: "true"
   sleep_duration: 8h
@@ -77,7 +78,7 @@ esphome:
     then:
       - logger.log:
           level: INFO
-          format: "BOOT: enable_deep_sleep=${enable_deep_sleep} measure_interval=${measure_interval}"
+          format: "BOOT: deep_sleep=${enable_deep_sleep} auto_measure=${enable_auto_measure}"
       - lambda: |-
           id(boot_count)++;
       - if:
@@ -86,7 +87,16 @@ esphome:
           then:
             - script.execute: boot_measure_then_sleep
           else:
-            - script.execute: measure_cycle
+            - if:
+                condition:
+                  lambda: 'return "${enable_auto_measure}" == "true";'
+                then:
+                  - script.execute: measure_cycle
+                else:
+                  - logger.log:
+                      level: INFO
+                      format: "Manual mode: sensor OFF — use Wake and Measure in HA"
+                  - switch.turn_off: sensor_power
 
 # toolchain: platformio — obejście template depth w ESPHome 2026.8 / HA (deprecated ~2027.2)
 esp32:
@@ -330,7 +340,9 @@ interval:
     then:
       - if:
           condition:
-            lambda: 'return "${enable_deep_sleep}" != "true";'
+            lambda: |-
+              return "${enable_deep_sleep}" != "true"
+                  && "${enable_auto_measure}" == "true";
           then:
             - script.execute: measure_cycle
 
@@ -368,16 +380,29 @@ switch:
     pin: ${pin_sensor_power}
     id: sensor_power
     name: "Sensor Power"
-    internal: true
+    icon: mdi:flash
     restore_mode: ALWAYS_OFF
 
 button:
   - platform: template
-    name: "Run Measurement"
-    id: run_measurement
-    internal: true
+    name: "Wake and Measure"
+    id: wake_and_measure
+    icon: mdi:sleep-off
     on_press:
+      - logger.log:
+          level: INFO
+          format: "HA wake: starting measure_cycle"
       - script.execute: measure_cycle
+
+  - platform: template
+    name: "Measure Battery Only"
+    id: measure_battery_only
+    icon: mdi:battery-check
+    on_press:
+      - logger.log:
+          level: INFO
+          format: "HA: battery read only (sensor stays OFF)"
+      - component.update: battery_voltage
 
 sensor:
   - platform: ultrasonic

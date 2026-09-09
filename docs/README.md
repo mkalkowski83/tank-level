@@ -11,6 +11,12 @@
 | Block diagram (SVG) | [tank-overview.en.svg](schematics/tank-overview.en.svg) | [tank-overview.pl.svg](schematics/tank-overview.pl.svg) |
 | Block diagram (PNG) | [tank-overview.en.png](schematics/tank-overview.en.png) | [tank-overview.pl.png](schematics/tank-overview.pl.png) |
 
+## KiCad / KiCad
+
+| Topic | Project |
+|-------|---------|
+| DevKit + AO3401A schematic | [tank-level-devkit.kicad_pro](kicad/tank-level-devkit/tank-level-devkit.kicad_pro) — [README.pl.md](kicad/tank-level-devkit/README.pl.md) |
+
 ## Design & plan / Specyfikacja i plan
 
 | Document | English | Polski |
