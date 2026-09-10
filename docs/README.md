@@ -8,8 +8,7 @@
 | DevKit connections | [connections-devkit.en.md](schematics/connections-devkit.en.md) | [connections-devkit.pl.md](schematics/connections-devkit.pl.md) |
 | DevKit + AO3401A (active) | [connections-ao3401a.en.md](schematics/connections-ao3401a.en.md) | [connections-ao3401a.pl.md](schematics/connections-ao3401a.pl.md) |
 | FireBeetle (target) | [connections-firebeetle.en.md](schematics/connections-firebeetle.en.md) | [connections-firebeetle.pl.md](schematics/connections-firebeetle.pl.md) |
-| Block diagram (SVG) | [tank-overview.en.svg](schematics/tank-overview.en.svg) | [tank-overview.pl.svg](schematics/tank-overview.pl.svg) |
-| Block diagram (PNG) | [tank-overview.en.png](schematics/tank-overview.en.png) | [tank-overview.pl.png](schematics/tank-overview.pl.png) |
+| Schematic (KiCad PDF) | [tank-level-devkit.pdf](schematics/tank-level-devkit.pdf) | [tank-level-devkit.pdf](schematics/tank-level-devkit.pdf) |
 
 ## KiCad / KiCad
 

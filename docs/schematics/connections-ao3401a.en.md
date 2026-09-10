@@ -10,6 +10,8 @@ Previous variant (IRLZ44N low-side): [`connections-devkit.en.md`](connections-de
 
 Migration spec: [`../superpowers/specs/2026-09-02-ao3401a-migration-design.en.md`](../superpowers/specs/2026-09-02-ao3401a-migration-design.en.md).
 
+**Schematic (KiCad export):** [tank-level-devkit.pdf](tank-level-devkit.pdf) — source project: [`../kicad/tank-level-devkit/`](../kicad/tank-level-devkit/).
+
 ---
 
 ## 1. Battery power

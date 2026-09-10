@@ -33,7 +33,7 @@ Wireless septic tank level monitor built with **ESP32**, **ESPHome**, and **Home
 | English | This file |
 | Polski | [README.pl.md](README.pl.md) |
 
-See **[docs/schematics/wiring-diagram.en.md](docs/schematics/wiring-diagram.en.md)** for the full block diagram, GPIO map, and connection tables.
+See **[docs/schematics/connections-ao3401a.en.md](docs/schematics/connections-ao3401a.en.md)** for connection tables · [KiCad PDF](docs/schematics/tank-level-devkit.pdf)
 
 Additional docs:
 

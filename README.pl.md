@@ -33,7 +33,7 @@ Bezprzewodowy monitor poziomu tanku oparty na **ESP32**, **ESPHome** i **Home As
 | Polski | Ten plik |
 | English | [README.en.md](README.en.md) |
 
-Schemat połączeń: **[docs/schematics/wiring-diagram.pl.md](docs/schematics/wiring-diagram.pl.md)**
+Schemat połączeń: **[docs/schematics/connections-ao3401a.pl.md](docs/schematics/connections-ao3401a.pl.md)** · [PDF (KiCad)](docs/schematics/tank-level-devkit.pdf)
 
 Dodatkowe dokumenty:
 

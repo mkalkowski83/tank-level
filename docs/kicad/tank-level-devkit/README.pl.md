@@ -93,7 +93,7 @@ Następnie ponownie otwórz projekt w KiCad.
 1. Opisz zmianę (np. „dodaj wariant przekaźnika”, „popraw R3/R4”).
 2. Agent edytuje pliki w `docs/kicad/tank-level-devkit/`.
 3. Ty otwierasz projekt w KiCad i weryfikujesz ERC.
-4. Opcjonalnie: **File → Plot** → PDF do `docs/schematics/`.
+4. Eksport schematu: **File → Plot** → PDF → `docs/schematics/tank-level-devkit.pdf`
 
 **Nie ma** bezpośredniego połączenia z GUI KiCad — pracujemy przez pliki w repozytorium.
 
@@ -117,5 +117,5 @@ Po edycji schematu uruchom **Inspect → Electrical Rules Checker**.
 ## Kolejne kroki (opcjonalnie)
 
 - [ ] Wariant `tank-level-relay` (moduł przekaźnika 5V, `inverted: true`)
-- [ ] Eksport PDF obok `connections-ao3401a.pl.md`
+- [x] Eksport PDF → [`../../schematics/tank-level-devkit.pdf`](../../schematics/tank-level-devkit.pdf)
 - [ ] Footprinty pod płytkę uniwersalną

@@ -10,6 +10,8 @@ Poprzedni wariant (IRLZ44N low-side): [`connections-devkit.pl.md`](connections-d
 
 Spec migracji: [`../superpowers/specs/2026-09-02-ao3401a-migration-design.pl.md`](../superpowers/specs/2026-09-02-ao3401a-migration-design.pl.md).
 
+**Schemat ideowy (KiCad):** [tank-level-devkit.pdf](tank-level-devkit.pdf) — projekt źródłowy: [`../kicad/tank-level-devkit/`](../kicad/tank-level-devkit/).
+
 ---
 
 ## 1. Zasilanie z baterii
