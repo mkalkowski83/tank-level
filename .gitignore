@@ -1,2 +1,14 @@
 secrets.yaml
 esphome/.esphome/
+
+# KiCad — local/editor artifacts (do not commit)
+*.kicad_prl
+*.lck
+~*
+*.bak
+*.kicad_sch-bak
+*.kicad_pcb-bak
+*.kicad_dru-bak
+fp-info-cache
+*-backups/
+**/.history/
