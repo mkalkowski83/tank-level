@@ -226,6 +226,24 @@
 					)
 				)
 			)
+			(pin power_out line
+				(at -15.24 5.08 0)
+				(length 2.54)
+				(name "3V3"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "9"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
 			(pin input line
 				(at 15.24 10.16 180)
 				(length 2.54)
@@ -309,6 +327,24 @@
 					)
 				)
 				(number "7"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin input line
+				(at 15.24 -2.54 180)
+				(length 2.54)
+				(name "GPIO33/CHRG"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "8"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -756,7 +792,7 @@
 			)
 		)
 		(property "Value" "TP4056"
-			(at 0 8.89 0)
+			(at -0.254 7.112 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -777,7 +813,7 @@
 			)
 		)
 		(property "Datasheet" "https://ww1.microchip.com/downloads/en/DeviceDoc/20001984A.pdf"
-			(at 0 0 0)
+			(at -2.286 14.478 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(hide yes)
@@ -788,7 +824,7 @@
 			)
 		)
 		(property "Description" "TP4056 Li-ion charger module with DW01 protection; USB-C = IN+/IN-"
-			(at 0 0 0)
+			(at -0.508 12.7 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(hide yes)
@@ -813,7 +849,7 @@
 		)
 		(symbol "TP4056_1_1"
 			(pin power_in line
-				(at -10.16 3.81 0)
+				(at -10.16 5.08 0)
 				(length 2.54)
 				(name "IN+"
 					(effects
@@ -831,7 +867,7 @@
 				)
 			)
 			(pin power_in line
-				(at -10.16 -3.81 0)
+				(at -10.16 2.54 0)
 				(length 2.54)
 				(name "IN-"
 					(effects
@@ -916,6 +952,42 @@
 					(effects
 						(font
 							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin input line
+				(at -10.16 -3.81 0)
+				(length 2.54)
+				(name "CHRG"
+					(effects
+						(font
+							(size 1.016 1.016)
+						)
+					)
+				)
+				(number "7"
+					(effects
+						(font
+							(size 1.016 1.016)
+						)
+					)
+				)
+			)
+			(pin input line
+				(at -10.16 -6.35 0)
+				(length 2.54)
+				(name "STDBY"
+					(effects
+						(font
+							(size 1.016 1.016)
+						)
+					)
+				)
+				(number "8"
+					(effects
+						(font
+							(size 1.016 1.016)
 						)
 					)
 				)
