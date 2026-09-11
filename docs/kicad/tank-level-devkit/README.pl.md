@@ -41,11 +41,11 @@ KiCad nie ma gotowego modułu breadboard — dodane w repo:
 
 | Symbol | Opis | Piny |
 |--------|------|------|
-| `tank-level:TP4056` | Moduł z ochroną DW01 (6 padów) | IN+, IN−, B+, B−, OUT+, OUT− |
+| `tank-level:TP4056` | Moduł z ochroną DW01 (6 padów) | IN+, IN−, B+, B−, OUT+, OUT−, CHRG, STDBY |
 | `tank-level:TP4056_4P` | Goły moduł bez ochrony (4 pady) | IN+, IN−, B+, B− |
 | `tank-level:SOLAR_USB` | Panel solarny, gniazdo **USB-A żeńskie** | +5V, GND |
 
-**Dodanie na schemat:** Place → Symbol → biblioteka `tank-level` → `TP4056` (6 pinów) + `SOLAR_USB`.
+**Dodanie na schemat:** Place → Symbol → biblioteka `tank-level` → `TP4056` (8 pinów) + `SOLAR_USB`.
 
 **Panel + kabel (fizycznie):**
 
@@ -71,10 +71,12 @@ U3 OUT− ──► GND
 |------|-----------|
 | `BAT+` | Plus ogniwa (3–4,2 V) |
 | `+5V` | OUT+ MT3608 |
+| `+3V3` | Regulator na DevKit (pull-up CHRG itd.) |
 | `GND` | Masa wspólna |
 | `GPIO4` | sensor_power |
 | `GPIO25` / `GPIO26` | Trig / Echo |
 | `GPIO34` | ADC baterii |
+| `GPIO33` | CHRG (TP4056, opcjonalnie) |
 | `SENSOR_VCC` | VCC czujnika (tylko przez Q1 DRAIN) |
 | `GATE` | węzeł Gate AO3401A + kolektor NPN |
 
