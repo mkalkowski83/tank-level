@@ -5,6 +5,6 @@
     (type "KiCad")
     (uri "${KIPRJMOD}/symbols/tank-level.kicad_sym")
     (options "")
-    (descr "Tank level sensor custom symbols")
+    (descr "Shared tank-level custom symbols (symlink)")
   )
 )

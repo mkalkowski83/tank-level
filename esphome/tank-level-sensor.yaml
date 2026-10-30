@@ -105,6 +105,9 @@ esp32:
   framework:
     type: arduino
     version: recommended
+    advanced:
+      minimum_chip_revision: "3.1"
+      sram1_as_iram: true
 
 logger:
   level: ${log_level}
