@@ -1,0 +1,81 @@
+substitutions:
+  device_name: tank-level-mains
+  friendly_name: Tank Level Mains
+  sensor_min_distance_cm: "20"
+  distance_empty_cm: "300"   # production; adjust after install
+  distance_full_cm: "40"
+  measure_interval: 1s
+  pin_ultrasonic_trig: GPIO25
+  pin_ultrasonic_echo: GPIO26
+
+esphome:
+  name: ${device_name}
+  friendly_name: ${friendly_name}
+
+esp32:
+  board: esp32dev
+  toolchain: platformio
+  framework:
+    type: arduino
+    version: recommended
+    advanced:
+      minimum_chip_revision: "3.1"
+      sram1_as_iram: true
+
+logger:
+api:
+  encryption:
+    key: !secret tank_level__encryption_key
+ota:
+  - platform: esphome
+wifi:
+  ssid: !secret wifi_guest_ssid
+  password: !secret wifi_guest_password
+
+button:
+  - platform: template
+    name: "Measure Now"
+    on_press:
+      - script.execute: measure_cycle
+
+script:
+  - id: measure_cycle
+    mode: restart
+    then:
+      - component.update: tank_distance
+      - component.update: tank_fill_level
+
+interval:
+  - interval: ${measure_interval}
+    then:
+      - script.execute: measure_cycle
+
+sensor:
+  - platform: ultrasonic
+    trigger_pin: ${pin_ultrasonic_trig}
+    echo_pin: ${pin_ultrasonic_echo}
+    timeout: 4m
+    pulse_time: 20us
+    name: "Tank Distance"
+    id: tank_distance
+    unit_of_measurement: cm
+    update_interval: never
+    filters:
+      - multiply: 100   # m → cm
+  - platform: template
+    name: "Tank Fill Level"
+    id: tank_fill_level
+    unit_of_measurement: "%"
+    update_interval: never
+    lambda: |-
+      if (isnan(id(tank_distance).state)) return NAN;
+      const float empty = ${distance_empty_cm};
+      const float full = ${distance_full_cm};
+      const float min_d = ${sensor_min_distance_cm};
+      const float d = id(tank_distance).state;
+      if (d < min_d) return 100.0f;
+      if (d >= empty) return 0.0f;
+      float pct = (empty - d) / (empty - full) * 100.0f;
+      if (pct < 0) return 0.0f;
+      if (pct > 100) return 100.0f;
+      return pct;

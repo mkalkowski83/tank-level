@@ -1,5 +1,6 @@
 secrets.yaml
 esphome/.esphome/
+.venv-xlsx/
 
 # KiCad — local/editor artifacts (do not commit)
 *.kicad_prl

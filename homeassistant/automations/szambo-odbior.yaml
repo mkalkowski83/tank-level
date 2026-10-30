@@ -1,0 +1,26 @@
+# Home Assistant — wklej jako nową automatyzację (Ustawienia → Automatyzacje → ⋮ → Edytuj w YAML)
+# albo do automations.yaml.
+
+alias: Szambo — wezwij odbiór (≥85%)
+description: Codziennie o 08:00 przypomina o odbiorze szamba, gdy poziom ≥ 85%.
+triggers:
+  - trigger: time
+    at: "08:00:00"
+conditions:
+  - condition: template
+    value_template: >-
+      {{ states('sensor.tank_level_mains_tank_fill_level') | float(0) >= 85 }}
+actions:
+  - action: notify.send_message
+    target:
+      entity_id: notify.michals_iphone
+    data:
+      title: Szambo
+      message: "Poziom ≥85% — zadzwoń po odbiór szamba"
+  - action: notify.send_message
+    target:
+      entity_id: notify.redmi_note_8_pro
+    data:
+      title: Szambo
+      message: "Poziom ≥85% — zadzwoń po odbiór szamba"
+mode: single

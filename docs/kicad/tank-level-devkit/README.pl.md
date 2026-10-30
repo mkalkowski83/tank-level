@@ -35,7 +35,7 @@ KiCad przy pierwszym otwarciu może zapytać o aktualizację bibliotek — zaakc
 | U3 | TP4056 (moduł ładowania — symbol własny) |
 | J2 | Panel solarny USB 5 V (`SOLAR_USB`) |
 
-### Symbole własne (`symbols/tank-level.kicad_sym`)
+### Symbole własne (wspólne: `../symbols/tank-level.kicad_sym`)
 
 KiCad nie ma gotowego modułu breadboard — dodane w repo:
 
